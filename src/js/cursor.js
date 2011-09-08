@@ -53,6 +53,8 @@ function setCaretTo(obj, pos) {
 	}
 }
 
+/* 	Thank you InvisibleBacon and Tim Down
+	http://stackoverflow.com/questions/1335252/how-can-i-get-the-dom-element-which-contains-the-current-selection	*/
 function getSelectedNode() {
     if (document.selection)
         return document.selection.createRange().parentElement();
@@ -62,6 +64,63 @@ function getSelectedNode() {
                 return selection.getRangeAt(0).startContainer.parentNode;
     }
 }
+
+function getSelectionBoundaryElement(isStart) {
+    var range, sel, container;
+    if (document.selection) {
+        range = document.selection.createRange();
+        range.collapse(isStart);
+        return range.parentElement();
+    } else {
+        sel = window.getSelection();
+        if (sel.getRangeAt) {
+            if (sel.rangeCount > 0) {
+                range = sel.getRangeAt(0);
+            }
+        } else {
+            // Old WebKit
+            range = document.createRange();
+            range.setStart(sel.anchorNode, sel.anchorOffset);
+            range.setEnd(sel.focusNode, sel.focusOffset);
+
+            // Handle the case when the selection was selected backwards (from the end to the start in the document)
+            if (range.collapsed !== sel.isCollapsed) {
+                range.setStart(sel.focusNode, sel.focusOffset);
+                range.setEnd(sel.anchorNode, sel.anchorOffset);
+            }
+       }
+
+        if (range) {
+           container = range[isStart ? "startContainer" : "endContainer"];
+
+           // Check if the container is a text node and return its parent if so
+           return container.nodeType === 3 ? container.parentNode : container;
+        }   
+    }
+}
+
+/* 	Thank you Alex King
+	http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript	*/
+function insertAtCursor(myField, myValue) {
+	//IE support
+	if (document.selection) {
+		myField.focus();
+		sel = document.selection.createRange();
+		sel.text = myValue;
+	}
+	//MOZILLA/NETSCAPE support
+	else if (myField.selectionStart || myField.selectionStart == '0') {
+		var startPos = myField.selectionStart;
+		var endPos = myField.selectionEnd;
+		myField.value = myField.value.substring(0, startPos)
+			+ myValue
+			+ myField.value.substring(endPos, myField.value.length);
+	} else {
+		myField.value += myValue;
+	}
+}
+// calling the function
+//insertAtCursor(document.formName.fieldName, 'this value');
 
 function test() {
 	document.getElementById("test").innerHTML = getSelectedNode();	
