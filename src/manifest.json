@@ -1,23 +1,28 @@
 {
-  "name": "My First Extension",
-  "version": "1.0",
-  "description": "The first extension that I made.",
-  "browser_action": {
-    "default_icon": "icons/icon.png",
-    "popup": "popup.html"
-  },
-  "content_scripts": [
+  	"name": "My First Extension",
+  	"version": "1.0",
+  	"description": "The first extension that I made.",
+  	"background_page": "background.html",
+  	"browser_action": {
+    	"default_icon": "icons/icon.png",
+    	"popup": "popup.html"
+  	},
+  	
+	"content_scripts": [
   	{
-  	   "matches": ["http://*/*", "https://*/*"],
-  	   "js": ["js/cursor.js"]
-  	}
-  ],
-  "permissions": [
-    "http://*/*", 
-    "https://*/*", 
-    "tabs", 
-    "notifications",
-    "contextMenus",
-    "unlimited_storage"
-  ]
+  	   	"matches": ["http://*/*", "https://*/*"],
+  	   	"js": [
+  	   		"js/background.js",
+  	   		"js/popup.js"
+  	  	]
+  	}],
+  	
+  	"permissions": [
+    	"http://*/*", 
+    	"https://*/*", 
+    	"tabs", 
+    	"notifications",
+    	"contextMenus",
+    	"unlimited_storage"
+  	]
 }

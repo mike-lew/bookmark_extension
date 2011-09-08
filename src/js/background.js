@@ -122,6 +122,10 @@ function insertAtCursor(myField, myValue) {
 // calling the function
 //insertAtCursor(document.formName.fieldName, 'this value');
 
+/* Request sent from background.html to extension */
+//chrome.browserAction.onClicked.addListener(function(tab) {
+//	var viewTabUrl = chrome.extension.getURL(
+
 function test() {
 	document.getElementById("test").innerHTML = getSelectedNode();	
 }
