@@ -1,4 +1,4 @@
-/* Event listener in popup */
+/* Event listener in popup /
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     console.log(sender.tab ?
@@ -9,11 +9,17 @@ chrome.extension.onRequest.addListener(
     else
       sendResponse({}); // snub them.
   });
-
-/* Listen for tab URL */
+  */
+chrome.extension.onRequest.addListener(displayNode);
+function displayNode(node) {
+	document.getElementById('currentSelect').innerHTML = "Test";
+}
+	
 window.addEventListener("load", windowLoaded, false);
-    function windowLoaded() {
-      chrome.tabs.getSelected(null, function(tab) {
-        document.getElementById('currentLink').innerHTML = tab.url;
-      });
-    }
+function windowLoaded() {
+ 	chrome.tabs.getSelected(null, function(tab) {
+ 		document.getElementById('currentLink').innerHTML = tab.url;
+    });
+}
+    
+
