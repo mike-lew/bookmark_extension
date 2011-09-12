@@ -10,16 +10,19 @@ chrome.extension.onRequest.addListener(
       sendResponse({}); // snub them.
   });
   */
-chrome.extension.onRequest.addListener(displayNode);
-function displayNode(node) {
-	document.getElementById('currentSelect').innerHTML = "Test";
-}
-	
-window.addEventListener("load", windowLoaded, false);
+ 
+//chrome.extension.onRequest.addListener(displayNode);
+//function displayNode(node) {
+//	document.getElementById('currentSelect').innerHTML = "Test";
+//}
+
+/* display current tab url */
 function windowLoaded() {
  	chrome.tabs.getSelected(null, function(tab) {
+ 		chrome.extension.sendRequest({method:"getSelection"}, function(response) {
+  			document.getElementById('currentSelect').innerHTML = response.s;  
+		});
  		document.getElementById('currentLink').innerHTML = tab.url;
     });
 }
-    
-
+window.addEventListener("load", windowLoaded, false);

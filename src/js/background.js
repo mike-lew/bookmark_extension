@@ -110,15 +110,6 @@
 // calling the function
 //insertAtCursor(document.formName.fieldName, 'this value');
 
-//function getSelText() {
-//    if (window.getSelection) {
-//        return window.getSelection();
-//    } else if (document.getSelection) {
-//        return document.getSelection();
-//   	} else if (document.selection) {
-//        return document.selection.createRange().text;
-//    } else return;
-//}
 
 /* 	Thank you InvisibleBacon and Tim Down
 	http://stackoverflow.com/questions/1335252/how-can-i-get-the-dom-element-which-contains-the-current-selection	*/
@@ -133,6 +124,15 @@ function getSelectedNode() {
 }
 
 /* Request sent from background.html to extension */
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.tabs.sendRequest(getSelectedNode());
-});
+function onRequest(request, sender, sendResponse) {
+	/* Add listener to send current selection */
+	//chrome.browserAction.onClicked.addListener(function(tab) {
+		if (request.method == "getSelection")
+	      sendResponse({s: window.getSelection().toString()});
+	    else
+	      sendResponse({}); // snub them.
+	//});
+}
+chrome.extension.onRequest.addListener(onRequest);
+
+
